@@ -5,6 +5,8 @@
   "main": "server.js",
   "dependencies": {
     "express": "4.*.*",
+    "cors": "2.*.*",
+    "aws-sdk": "2.*.*",
     "vin-lite": "3.*.*"
   },
   "devDependencies": {},

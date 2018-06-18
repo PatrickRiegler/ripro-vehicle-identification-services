@@ -1,7 +1,7 @@
 
 echo
 echo "restarting the service"
-docker-compose -f docker-compose.yml up -d --force-recreate
+docker-compose -f docker-compose.yml up -d --force-recreate --build
 
 echo
 echo "test if service was started"
@@ -10,19 +10,24 @@ bash -c 'i=0; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:808
 echo
 echo "run test cases:"
 echo "testing (debug): $i"
-curl "localhost:8081/vinCheck/WAUZZZF50JN016611?debug=true"
+curl "localhost:8081/vinCheck/WAUZZZF50JN016611?debug=true&test=true"
 echo
-testcases="WAUZZZF50JN016611 WAUZZZF50JN016611 WBADX7C58BE579982 WVWZZZ3CZEE140287"
+testcases="$(cat api/positivetestcases.test)"
 for i in $testcases
 do
   echo "testing: $i"
   echo "testing: $i - check"
-  curl "localhost:8081/vinCheck/$i"
+  curl "localhost:8081/vinCheck/$i?test=true"
   echo
   #echo "testing: $i - decode"
-  curl "localhost:8081/vinDecode/$i"
+  curl "localhost:8081/vinDecode/$i?test=true"
   echo
 done
+
+# echo "testing (findVinInImage): $i"
+# curl "localhost:8081/findVinInImage"
+# echo
+
 
 echo
 echo "tail log:"

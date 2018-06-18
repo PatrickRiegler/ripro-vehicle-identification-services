@@ -4,14 +4,19 @@ services:
   ripro-vis:
     image: patrickriegler/ripro-vis
     build:
-      context: .
+      context: ./api
       dockerfile: Dockerfile
     container_name: ripro-vis-app
     ports: ['8081:8081']
-    volumes:
-      - .:/usr/src/ripro-vis
+#    volumes:
+#      - .api/:/usr/src/ripro-vis/
 #    extra_hosts: 
 #     - "elasticsearch:${AWSIP}"
+    environment:
+#     - WSURL=${AWSIP}
+#     - WSPORT=1337
+     - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+     - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 #    logging:
 #      driver: gelf
 #      options:
