@@ -1,0 +1,25 @@
+---
+version: '3'
+services:
+  ripro-vis:
+    image: patrickriegler/ripro-vis
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ripro-vis-app
+    ports: ['8081:8081']
+    volumes:
+      - .:/usr/src/ripro-vis
+#    extra_hosts: 
+#     - "elasticsearch:${AWSIP}"
+#    logging:
+#      driver: gelf
+#      options:
+#        gelf-address: udp://${AWSIP}:12201
+#        tag: "websocket"
+#      driver: "json-file"
+#      options:
+#        max-size: "200k"
+#        max-file: "10"
+
+
