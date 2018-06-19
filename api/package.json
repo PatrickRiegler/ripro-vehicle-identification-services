@@ -7,6 +7,9 @@
     "express": "4.*.*",
     "cors": "2.*.*",
     "aws-sdk": "2.*.*",
+    "JSONPath": "0.*.*",
+    "lodash": "4.*.*",
+    "lodash.uniqwith": "4.*.*",
     "vin-lite": "3.*.*"
   },
   "devDependencies": {},

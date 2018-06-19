@@ -2,6 +2,8 @@ var express = require('express');
 var vinlite = require('vin-lite');
 var bodyParser = require('body-parser');  
 var querystring = require('querystring'); 
+var JSONPath = require('JSONPath');
+
 var cors = require('cors');
 
 var fs = require('fs');
@@ -17,26 +19,32 @@ app.use(bodyParser.json({ extended: false, limit: '50mb' }));
 debug = false;
 test = false;
 
-function log(req,method,status,performance,vin) {
-  ip = req.connection.remoteAddress
+function log(req,method,status,performance,payload) {
+  ip = (req.connection) ? req.connection.remoteAddress : "internal";
   var log = new Object()
   log.ip = ip
-  log.method = method
+  log.type = (method.indexOf("/")!=-1) ? "method" : "function";
+  log.action = method
   log.status = status
   log.performance = performance
-  log.vin = vin
+  log.payload = payload
   console.log(JSON.stringify(log));
 }
 
 var elapsed_time = function(debug,start,note){
-    var precision = 3; // 3 decimal places
+    var precision = 2; // 3 decimal places
     var elapsed = process.hrtime(start)[1] / 1000000; // divide by a million to get nano to milli
     if(debug) console.log(process.hrtime(start)[0] + " s, " + elapsed.toFixed(precision) + " ms - " + note); // print message + time
     // start = process.hrtime(); // reset the timer
     return elapsed.toFixed(precision);
 }
 
-function detectText(img) {
+function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
+
+function detectText(img,callback) {
+   var startdetectText = process.hrtime();
    var awsrekognition = new AWS.Rekognition({region: 'eu-west-1'});
    var params = {
     Image: { 
@@ -44,16 +52,66 @@ function detectText(img) {
     }
    };
    awsrekognition.detectText(params,function(err, data) {
-     console.log(data);
+     if(debug) console.log(data);
      /*
      if (err) console.log(err, err.stack); 
      else     return data;
      */
-     return data;
+     var imgText = data;
+     if(!test) log("","detectText",0,elapsed_time(debug,startdetectText,"end detectText()"),imgText.TextDetections.length)
+     callback(imgText);
    });
 }
 
-app.get('/vinCheck/:vin', function (req, res) {
+function findVinInText(txt) {
+   var startfindVinInText = process.hrtime();
+   var txtarr = "";
+   if(typeof txt == "object") {
+     for(i=0;i<txt.length;i++) if(txt[i].DetectedText!="undefined") txtarr += txt[i].DetectedText+" "
+     txt = txtarr
+   }
+   if(typeof txt == "array") {
+    txt = txt.merge(" ");
+   }
+   txtsplit = txt.split(" ");
+   if(debug) console.log(txt);
+   var vins = [];
+   for(i=0;i<txtsplit.length;i++) {
+     if(txtsplit[i].length>=3) {
+       if(debug) console.log(txtsplit[i]);
+       var q=i;
+       var txtcurr = "";
+       for(z=0;z<15;q++) {
+         if(debug) console.log("q: "+q+"  ---  i: "+i+"  ---  txtcurr: "+txtcurr+"  ---  txtsplit[q]: "+txtsplit[q]);
+	 txtcurr += txtsplit[q];
+         txtcurr = txtcurr.replace(/\s/g, '');
+         z=txtcurr.length;
+       }
+       if(txtcurr.length>15 && txtcurr.length<18) {
+         txtcurr = txtcurr.toUpperCase();
+         txtcurr = txtcurr.replace("O","0")
+         if(vinlite.isValid(txtcurr)) {
+           if(debug) console.log(txtcurr)
+           vins.push(txtcurr)
+         }
+       }
+     }
+   }
+   var uniqueVins = vins.filter( onlyUnique );
+   if(debug) console.log(uniqueVins);
+   if(!test) log("","findVinInText",0,elapsed_time(debug,startfindVinInText,"end findVinInText()"),uniqueVins.length)
+   return uniqueVins;
+}
+
+
+
+app.post('/vin/check/:vin', function (req, res) {
+  // to be implemented
+  console.log("not yet implemented");
+});
+
+
+app.get('/vin/check/:vin', function (req, res) {
  try {
    var start = process.hrtime();
    var debug = (req.query.debug && req.query.debug!=undefined)? req.query.debug : debug;
@@ -69,17 +127,17 @@ app.get('/vinCheck/:vin', function (req, res) {
    vinCheck.vinIsValid = check
    if(debug) console.log(vinCheck);
    vinCheck = JSON.stringify(vinCheck);
-   if(!test) log(req,"vinCheck",200,elapsed_time(debug,start,"end vinCheck()"),vin)
+   if(!test) log(req,"vin/check",200,elapsed_time(debug,start,"end vin/check()"),vin)
    res.end(vinCheck);
  } catch(error) {
    console.error("error");
    res.statusCode = 500;
-   if(!test) log(req,"vinCheck",500,elapsed_time(debug,start,"end vinCheck()"),vin)
-   return res.json({ errors: ["vinCheck could not be performed"] });
+   if(!test) log(req,"vin/check",500,elapsed_time(debug,start,"end vin/check()"),vin)
+   return res.json({ errors: ["vin/check could not be performed"] });
  }
 })
 
-app.get('/vinDecode/:vin', function (req, res) {
+app.get('/vin/decode/:vin', function (req, res) {
  try {
    var start = process.hrtime();
    var debug = (req.query.debug && req.query.debug!=undefined)? req.query.debug : debug;
@@ -94,45 +152,50 @@ app.get('/vinDecode/:vin', function (req, res) {
    if(typeof decoded == "object") {
      decoded = JSON.stringify(decoded);
    }
-   if(!test) log(req,"vinDecode","successful",elapsed_time(debug,start,"end vinDecode()"),vin)
+   if(!test) log(req,"vin/decode","successful",elapsed_time(debug,start,"end vin/decode()"),vin)
    res.end(decoded);
  } catch(error) {
    console.error(error.toString());
    res.statusCode = 500;
-   if(!test) log(req,"vinDecode",500,elapsed_time(debug,start,"end vinCheck()"),vin)
-   return res.json({ errors: ["vinDecode could not be performed"] });
+   if(!test) log(req,"vin/decode",500,elapsed_time(debug,start,"end vin/decode()"),vin)
+   return res.json({ errors: ["vin/decode could not be performed"] });
  }
 })
 
 
-app.use('/findVinInImage', function (req, res) {
+app.post('/vin/findInImage', function (req, res) {
    var start = process.hrtime();
    var debug = (req.query.debug && req.query.debug!=undefined)? req.query.debug : debug;
    var test = (req.query.test && req.query.test!=undefined)? req.query.test : test;
    if (req.method === 'POST') {
-      // Handle post info...
      var input = req.body;
      var imgb64 = input.img.substr(input.img.indexOf(",")+1);
      // console.log(img);
-     // console.log(img.substr(0,100));
+     if(debug) console.log(img.substr(0,100));
      var img = Buffer.from(imgb64, 'base64');
      detectText(img, function(imgText) {
-       res.statusCode = 200;
-       console.log(imgText.result);
-       if(!test) log(req,"findVinInImage",200,elapsed_time(debug,start,"end findVinInImage()"))
-       return res.end(imgText);
+       if(debug) console.log(imgText);
+       if(imgText.TextDetections) {
+         res.statusCode = 200;
+         if(debug) console.log(imgText.TextDetections);
+         vinvals = findVinInText(imgText.TextDetections);
+         if(vinvals.length>0) {
+           var vinres = {
+             vins: vinvals
+           }
+           if(debug) console.log(JSON.stringify(vinres));
+           if(!test) log(res,"vin/findInImage",200,elapsed_time(debug,start,"end vin/findInImage()"),vinvals.length)
+           return res.end(JSON.stringify(vinres));
+         } else {
+           if(!test) log(req,"vin/findInImage",500,elapsed_time(debug,start,"end vin/findInImage()"))
+           return res.json({ errors: ["vin/findInImage could not find any valid VIN numbers on the image"] });
+         }
+       } else {
+         if(!test) log(req,"vin/findInImage",500,elapsed_time(debug,start,"end vin/findInImage()"))
+         return res.json({ errors: ["vin/findInImage could not be performed"] });
+       }
      });
    } 
-/*
-     else {
-     // console.error(error.toString());
-     res.statusCode = 500;
-     if(!test) log(req,"findVinInImage",500,elapsed_time(debug,start,"end findVinInImage()"))
-     return res.json({ errors: ["findVinInImage could not be performed"] });
-   }
-
-*/
-
 
 })
 
