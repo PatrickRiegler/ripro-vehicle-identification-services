@@ -103,6 +103,24 @@ function findVinInText(txt) {
    return uniqueVins;
 }
 
+/* deactivated for the moment....
+var initApi = function(req) {
+ try {
+   console.log("between1")
+   var start = process.hrtime();
+   var debug = (req.query.debug && req.query.debug!=undefined)? req.query.debug : debug;
+   var test = (req.query.test && req.query.test!=undefined)? req.query.test : test;
+   console.log("between2")
+ } catch(err) {
+   console.log(err)
+ }
+   return { 
+	start: start,
+        debug: debug,
+        test: test
+   };
+}
+*/
 
 
 app.post('/vin/check/:vin', function (req, res) {
@@ -162,6 +180,10 @@ app.get('/vin/decode/:vin', function (req, res) {
  }
 })
 
+app.get('/vin/decodepro/:vin', function (req, res) {
+  // to be implemented
+  console.log("not yet implemented");
+});
 
 app.post('/vin/findInImage', function (req, res) {
    var start = process.hrtime();

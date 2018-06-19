@@ -9,18 +9,21 @@ bash -c 'i=0; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:808
 
 echo
 echo "run test cases:"
-echo "testing (debug): $i"
-curl "localhost:8081/vin/check/WAUZZZF50JN016611?debug=true&test=true"
+url="localhost:8081/vin/check/WAUZZZF50JN016611?debug=true&test=true"
+echo "testing (debug): $i --- ($url)"
+curl $url
 echo
 testcases="$(cat api/positivetestcases.test)"
 for i in $testcases
 do
   echo "testing: $i"
-  echo "testing: $i - check"
-  curl "localhost:8081/vin/check/$i?test=true"
+  url="localhost:8081/vin/check/$i?test=true"
+  echo "testing: $i - check --- ($url)"
+  curl $url
   echo
-  #echo "testing: $i - decode"
-  curl "localhost:8081/vin/decode/$i?test=true"
+  url="localhost:8081/vin/decode/$i?test=true"
+  echo "testing: $i - decode --- ($url)"
+  curl $url
   echo
 done
 
