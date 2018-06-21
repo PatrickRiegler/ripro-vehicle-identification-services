@@ -34,6 +34,17 @@ do
   echo
 done
 
+
+echo
+echo "run test cases:"
+#url="${host}/vin/check/WAUZZZF50JN016611?test=true"
+url="${host}/vin/check"
+echo "testing (post): --- ($url)"
+curl -X POST -H "Content-Type: application/json" -d '{"vins":["WAUZZZF50JN016611","WDD2210561A233135","WDC1660241A815681"]}' $url
+curl $url
+echo
+
+
 # echo "testing (vin/findInImage): $i"
 # curl "${host}/vin/findInImage"
 # echo

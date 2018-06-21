@@ -27,15 +27,36 @@ app.get('/healthcheck', function (req, res) {
   return res.json({ response: "successful" });
 });
 
-app.post('/vin/check/:vin', function (req, res) {
-  // to be implemented
-  console.log("not yet implemented");
+app.post('/vin/check', function (req, res) {
+  // initialize the function
+  var init = initApi(req);
+
+  try {
+
+    var vins = req.body.vins;
+    var result = {};
+    for(i=0;i<vins.length;i++) {
+      if(init.debug) console.log(vins[i]);
+      result[vins[i]] = vinlite.isValid(vins[i]);
+    }
+    if(init.debug) console.log("result: "+JSON.stringify(result))
+    if(!init.test) log(req,"vin/check",200,elapsed_time(init.debug,init.start,"end vin/check()"),JSON.stringify(result))
+    return res.json(JSON.stringify(result));
+
+  } catch (err) {
+
+    res.statusCode = 500;
+    console.log(err)
+    if(!vins) vins = "{ error: 'value vins not set' }"
+    if(!init.test) log(req,"vin/check",500,elapsed_time(init.debug,init.start,"end vin/check()"),vins.toString())
+    return res.json({ errors: ["vin/check could not be performed"] });
+
+  }
 });
 
 
 app.get('/vin/check/:vin', function (req, res) {
  try {
-   // initialize the function
    var init = initApi(req);
    var vin = req.params.vin;
 
