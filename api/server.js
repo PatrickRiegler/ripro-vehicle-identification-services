@@ -122,6 +122,15 @@ var initApi = function(req) {
 }
 */
 
+app.get('/', function (req, res) {
+  res.statusCode = 200;
+  return res.json({ response: "successful" });
+});
+
+app.get('/healthcheck', function (req, res) {
+  res.statusCode = 200;
+  return res.json({ response: "successful" });
+});
 
 app.post('/vin/check/:vin', function (req, res) {
   // to be implemented
