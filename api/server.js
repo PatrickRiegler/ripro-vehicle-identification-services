@@ -221,12 +221,12 @@ app.post('/vin/findInImage', function (req, res) {
 
 })
 
-
-var server = app.listen(8081, function () {
+var serverPort = (process.env.PORT>0)? process.env.PORT : 80;
+var server = app.listen(serverPort, function () {
 
   var host = server.address().address
   var port = server.address().port
 
-  console.log("RiPro Vehicle Identification Services listening on http://%s:%s", host, port)
+  console.log("RiPro Vehicle Identification Services listening on Port: %s", port)
 
 })

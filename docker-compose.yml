@@ -15,6 +15,7 @@ services:
     environment:
 #     - WSURL=${AWSIP}
 #     - WSPORT=1337
+     - PORT=8081
      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 #    logging:
