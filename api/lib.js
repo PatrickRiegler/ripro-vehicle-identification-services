@@ -1,4 +1,5 @@
 
+vindecoderUrl = "https://api.vindecoder.eu/2.0";
 
 debug = false;
 test = false;
@@ -25,6 +26,11 @@ var elapsed_time = function(debug,start,note){
 
 function onlyUnique(value, index, self) { 
     return self.indexOf(value) === index;
+}
+
+function vindecoder(vin,callback) {
+  // TODO: to be implemented
+  callback(vindecoderUrl)
 }
 
 function detectText(img,callback) {

@@ -108,9 +108,27 @@ app.get('/vin/decode/:vin', function (req, res) {
  }
 })
 
-app.get('/vin/decodepro/:vin', function (req, res) {
-  // to be implemented
-  console.log("not yet implemented");
+app.get('/vin/decodePro/:vin', function (req, res) {
+ var init = initApi(req);
+ try {
+
+   var vin = req.params.vin;
+   var decoded = vin;
+   vindecoder(vin, function(result) {
+     // TODO: to be implemented
+     console.log(result);
+   });
+   if(!init.test) log(req,"vin/decodePro","successful",elapsed_time(init.debug,init.start,"end vin/decodePro()"),vin)
+   res.end(JSON.stringify(decoded));
+
+ } catch(error) {
+
+   console.error(error.toString());
+   res.statusCode = 500;
+   if(!init.test) log(req,"vin/decodePro",500,elapsed_time(init.debug,init.start,"end vin/decodePro()"),vin)
+   return res.json({ errors: ["vin/decodePro could not be performed"] });
+
+ }
 });
 
 app.post('/vin/findInImage', function (req, res) {
