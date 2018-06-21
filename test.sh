@@ -1,6 +1,6 @@
 
-# host=http://localhost:8081
-host="ripro-svis-lb-96fd9452b00ef973.elb.eu-central-1.amazonaws.com"
+host=http://localhost:8081
+# host="ripro-svis-lb-96fd9452b00ef973.elb.eu-central-1.amazonaws.com"
 
 echo
 echo "run health check:"

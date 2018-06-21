@@ -9,6 +9,6 @@ CMD [ "npm", "start" ]
 COPY package*.json ./
 RUN npm install
 
-COPY ./*.js .
-COPY ./*.png .
+COPY ./*.js ./
+COPY ./*.png ./
 
