@@ -5,6 +5,7 @@ host=http://localhost:8081
 echo
 echo "restarting the service"
 docker-compose -f docker-compose.yml up -d --force-recreate --build
+if [ $? -ne 0 ]; then echo "docker command not successuful"; exit 2; fi
 
 echo
 echo "test if service was started"

@@ -29,3 +29,28 @@ services:
 #        max-file: "10"
 
 
+  ripro-vis-demonstrator:
+    image: patrickriegler/ripro-vis-demonstrator
+    build:
+      context: ./demonstrator
+      dockerfile: Dockerfile
+    container_name: ripro-vis-demonstrator-app
+    ports: ['8082:80']
+#    volumes:
+#      - .api/:/usr/src/ripro-vis/
+#    extra_hosts: 
+#     - "elasticsearch:${AWSIP}"
+#    environment:
+#     - WSURL=${AWSIP}
+#     - WSPORT=1337
+#    logging:
+#      driver: gelf
+#      options:
+#        gelf-address: udp://${AWSIP}:12201
+#        tag: "websocket"
+#      driver: "json-file"
+#      options:
+#        max-size: "200k"
+#        max-file: "10"
+
+
