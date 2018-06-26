@@ -1,22 +1,5 @@
 
 
-$("#fzschein").siblings().on("click", function() {
-  $("#fzschein").siblings().removeClass("TabsField__selected--3vqWT");
-  $("#fzschein").removeClass("TabsField__selected--3vqWT");
-  $(this).toggleClass("TabsField__selected--3vqWT");
-
-  $("#fzschein").parent().next("div").show();
-  $("#fzschein").parent().next("div").next("div").hide();
-});
-$("#fzschein").on("click", function() {
-  $("#fzschein").siblings().removeClass("TabsField__selected--3vqWT");
-  $("#fzschein").removeClass("TabsField__selected--3vqWT");
-  $(this).toggleClass("TabsField__selected--3vqWT");
-
-  $("#fzschein").parent().next("div").hide();
-  $("#fzschein").parent().next("div").next("div").show();
-}); 
-
 var lpchpattern=/(\bAG|\bSZ|\bZH|\bsZ)\s*(\d[0-9\s*0-9]{0,6})\b/
 var tgpattern=/[0-9]{1,1}[a-zA-Z ]{2,2}[0-9]{0,5}$/g
 var kbapattern=/[0-9]{1,1}[a-zA-Z ]{2,2}[0-9]{0,5}$/g
@@ -109,11 +92,11 @@ function callApi(img) {
 		}
 		otxt = response[i].DetectedText;
 	}
-	if(licensePlate) $("#result").append("<br><br>License Plate: "+licensePlate);
-	if(typenGenehmigung) $("#result").append("<br><br>Typengenehmigung: "+typenGenehmigung);
+	if(licensePlate) $("#result").css('display', 'inline-block').append("<br><br>License Plate: "+licensePlate);
+	if(typenGenehmigung) $("#result").css('display', 'inline-block').append("<br><br>Typengenehmigung: "+typenGenehmigung);
 	if(response.vins && response.vins.length>0) {
           console.log(JSON.stringify(response.vins))
-          response.vins.forEach(function (element) { $("#result").append("<br><br>VIN: "+element) });
+          response.vins.forEach(function (element) { $("#result").css('display', 'inline-block').append("<br><br>VIN: "+element) });
         }
       }
     };

@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>i
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>RiPro - Smart Vehicle Identification Services - Demonstrator</title>
 <body>
       
-      <div >
+      <div class="fullscreen">
 
 <style type="text/css">
-#player, #canvas {
-    position:relative;
+.fullscreen {
     width:100%;
-    height:567px;
+    height:100%;
+    text-align:center;
+}
+
+#player, #canvas, #result {
+    display: inline;
+    position:relative;
+    height:100%;
+    width:60vw;
     z-index: 1;
 }
 #overlay {
+    display: none;
     border:5px dashed white;
     vertical-align: middle;
     margin:5%;
     z-index: 10;
     position: relative; 
-    width:90%;
-    height: 500px;
+    width:60vw;
+    height:90%;
     top: -567px; 
     margin-bottom: -500px;
 }
@@ -35,6 +43,7 @@
 }
 #result {
     font-size: 25px;
+    display: none;
 }
 canvas, #testimg {
 display: none;
@@ -46,7 +55,7 @@ display: none;
 <p>Zentriere den Fahrzeugschein in dieses Feld...<br>Und klicke auf das Bild!</p>
 </div>
 <canvas id="canvas"></canvas>
-<div id="result"></div>
+<div id="result">Result</div>
 
 <script>
 
