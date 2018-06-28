@@ -3,6 +3,9 @@ var vinlite = require('vin-lite');
 var bodyParser = require('body-parser');  
 var querystring = require('querystring'); 
 var JSONPath = require('JSONPath');
+var sha1 = require('sha1');
+var request = require('request');
+var rp = require('request-promise');
 
 var cors = require('cors');
 
@@ -111,15 +114,14 @@ app.get('/vin/decode/:vin', function (req, res) {
 app.get('/vin/decodePro/:vin', function (req, res) {
  var init = initApi(req);
  try {
-
    var vin = req.params.vin;
    var decoded = vin;
-   vindecoder(vin, function(result) {
-     // TODO: to be implemented
-     console.log(result);
+   var json = vindecoder(vin, false, init.debug, function (callback) {
+     console.log("vd - typeof: "+typeof callback)
+     console.log("callback: "+callback)
+     if(!init.test) log(req,"vin/decodePro","successful",elapsed_time(init.debug,init.start,"end vin/decodePro()"),json)
+     res.end(callback);
    });
-   if(!init.test) log(req,"vin/decodePro","successful",elapsed_time(init.debug,init.start,"end vin/decodePro()"),vin)
-   res.end(JSON.stringify(decoded));
 
  } catch(error) {
 
@@ -127,6 +129,28 @@ app.get('/vin/decodePro/:vin', function (req, res) {
    res.statusCode = 500;
    if(!init.test) log(req,"vin/decodePro",500,elapsed_time(init.debug,init.start,"end vin/decodePro()"),vin)
    return res.json({ errors: ["vin/decodePro could not be performed"] });
+
+ }
+});
+
+app.get('/vin/decodePro/info/:vin', function (req, res) {
+ var init = initApi(req);
+ try {
+   var vin = req.params.vin;
+   var decoded = vin;
+   var json = vindecoder(vin, true, init.debug, function (callback) {
+     console.log("vd - typeof: "+typeof callback)
+     console.log("callback: "+callback)
+     if(!init.test) log(req,"vin/decodePro/info","successful",elapsed_time(init.debug,init.start,"end vin/decodePro/info()"),json)
+     res.end(callback);
+   });
+
+ } catch(error) {
+
+   console.error(error.toString());
+   res.statusCode = 500;
+   if(!init.test) log(req,"vin/decodePro/info",500,elapsed_time(init.debug,init.start,"end vin/decodePro/info()"),vin)
+   return res.json({ errors: ["vin/decodePro/info could not be performed"] });
 
  }
 });

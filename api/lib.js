@@ -28,9 +28,33 @@ function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
-function vindecoder(vin,callback) {
-  // TODO: to be implemented
-  callback(vindecoderUrl)
+function vindecoder(vin,info,debug,callback) {
+  var apikey = process.env.APIKEY
+  var secretkey = process.env.SECRETKEY
+  var id = (info) ? "info-"+vin : vin
+  if(debug) console.log("id: "+id)
+  var controlsum = sha1(id+"|"+apikey+"|"+secretkey)
+  if(debug) console.log(controlsum)
+  var controlsum = controlsum.substr(0,10)
+  if(debug) console.log(controlsum)
+  var path = (info) ? "decode/info" : "decode"
+
+  url = vindecoderUrl + "/" + apikey + "/" + controlsum + "/" + path + "/" + vin + ".json"
+  if(debug) console.log(url)
+
+  var options = {
+    uri: url,
+    method: "GET",
+    json: true,
+    headers: { 'Content-Type': 'application/json' }
+  };
+  rp(options).then(function (parsedBody) {
+      json = JSON.stringify(parsedBody)
+      console.log("typeof json: "+typeof json)
+      console.log("json: "+json)
+      callback(json)
+  })
+
 }
 
 function detectText(img,callback) {

@@ -18,6 +18,8 @@ services:
      - PORT=8081
      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+     - APIKEY=${APIKEY}
+     - SECRETKEY=${SECRETKEY}
 #    logging:
 #      driver: gelf
 #      options:
@@ -41,6 +43,8 @@ services:
 #    extra_hosts: 
 #     - "elasticsearch:${AWSIP}"
 #    environment:
+#     - APIKEY=${APIKEY}
+#     - SECRETKEY=${SECRETKEY}
 #     - WSURL=${AWSIP}
 #     - WSPORT=1337
 #    logging:
