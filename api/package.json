@@ -13,12 +13,17 @@
     "sha1": "1.*.*",
     "request": "2.*.*",
     "request-promise": "4.*.*",
+    "mocha": "5.*.*",
+    "assert": "1.*.*",
     "vin-lite": "3.*.*"
   },
   "devDependencies": {},
   "scripts": {
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "scripts": {
+    "test": "mocha"
   },
   "keywords": [],
   "author": "",

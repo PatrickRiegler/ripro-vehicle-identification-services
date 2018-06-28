@@ -48,3 +48,11 @@ echo
 # curl "${host}/vin/findInImage"
 # echo
 
+
+echo
+echo "run mocha test cases:"
+cd api
+npm test
+cd ..
+
+
