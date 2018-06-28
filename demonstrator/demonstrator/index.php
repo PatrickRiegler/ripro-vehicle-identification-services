@@ -123,6 +123,9 @@ display: none;
   crossorigin="anonymous"></script>
 <script type="text/javascript" src="./require.js"></script>
 <script type="text/javascript" src="./fzs.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dynatable/0.3.1/jquery.dynatable.min.css" />
+<link rel="stylesheet" href="./svis.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Dynatable/0.3.1/jquery.dynatable.min.js"></script>
 <!-- <script type="text/javascript" src="./IM.min.js"></script> -->
     
 

@@ -12,7 +12,8 @@ var kbaenabled=false;
 // var APIURL = "http://192.168.1.105:8090/image2text/image2text.php"
 // var APIHOST = "ripro-svis-lb-96fd9452b00ef973.elb.eu-central-1.amazonaws.com"
 var APIHOST = "localhost:8081"
-var APIURL = "http://" +APIHOST + "/vin/findInImage"
+var APIPATH = "/vin/findInImage"
+var APIURL = "http://" +APIHOST + APIPATH
 function callApi(img) {
     var url = APIURL;
     console.log(url);
@@ -96,7 +97,7 @@ function callApi(img) {
 	if(typenGenehmigung) $("#result").css('display', 'inline-block').append("<br><br>Typengenehmigung: "+typenGenehmigung);
 	if(response.vins && response.vins.length>0) {
           console.log(JSON.stringify(response.vins))
-          response.vins.forEach(function (element) { $("#result").css('display', 'inline-block').append("<br><br>VIN: "+element) });
+          response.vins.forEach(function (element) { $("#result").css('display', 'inline-block').append("<br><br><div id='"+element+"'>VIN: "+element+"</div><br><div id='table-div-"+element+"'><table id='table-"+element+"'><thead><th>Label</th><th>Value</th></thead><tbody></tbody></table></div>"); getVinInfo(element); })
         }
       }
     };
@@ -106,5 +107,38 @@ function callApi(img) {
 
 }
 
+function getVinInfo(vin) {
+    var APIPATH = "/vin/decodePro"
+    var APIURL = "http://" +APIHOST + APIPATH + "/" + vin
+    var url = APIURL;
+    console.log(url);
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("get", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
 
-
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        // console.log(this.responseText);
+        var response = JSON.parse(this.responseText);
+        console.log(JSON.stringify(response))
+        // console.log($("#table-"+vin))
+        if(response.decode) {
+        $("#table-"+vin).dynatable({
+          features: {
+            paginate: false,
+            recordCount: false,
+            sorting: false,
+            search: false
+          },
+          dataset: {
+            records: response.decode
+          }
+        })
+        } else {
+          $("#table-"+vin).hide()
+          $("#table-div-"+vin).append("VIN could not be decoded....")
+        }
+      }
+    }
+    xhttp.send();
+}
