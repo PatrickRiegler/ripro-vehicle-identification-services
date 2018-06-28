@@ -8,3 +8,5 @@ describe('Array', function() {
   });
 });
 
+// test branch restriction
+
