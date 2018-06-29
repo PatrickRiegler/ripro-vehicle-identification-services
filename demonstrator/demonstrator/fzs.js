@@ -1,4 +1,70 @@
 
+// var APIURL = "http://192.168.1.105:8090/image2text/image2text.php"
+// var APIHOST = "https://ripro-svis-lb-96fd9452b00ef973.elb.eu-central-1.amazonaws.com"
+var APIHOST = "http://localhost:8081"
+
+
+$(document).ready(function() { 
+	$("select[id*='vin-'][id*='-vin']").select2(); 
+});
+
+$(".nav a").click(function() {
+	$("div[id*='-area']").hide()
+	// $("#"+$(this).attr("id")+"-status").hide()
+	// $("#"+$(this).attr("id")+"-result").hide()
+	$("#"+$(this).attr("id")+"-area").show()
+})
+
+$("select[id*='vin-'][id*='-vin']").on("change",function () {
+	objt = "#"+$(this).attr("id").substr(0,$(this).attr("id").indexOf("-vin"))
+	console.log(objt)
+	$(objt+"-status").hide()
+	$(objt+"-result").hide()
+	$(objt+"-result div").html("")
+	$(objt+"-submit").click()
+})
+
+//$("#vin-check-submit").click(function () {
+$("[id*='vin-'][id*='-submit']").click(function () {
+    objt = "#"+$(this).attr("id").substr(0,$(this).attr("id").indexOf("-submit"))
+    $(objt+"-status").hide()
+    $(objt+"-result").hide()
+    $(objt+"-result div").html("")
+    var vin = $(objt+"-vin").val()
+    APIURL = APIHOST + "/"+objt.replace("#","").replace("-","/")+"/" + vin
+    var url = APIURL;
+    console.log(url);
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("get", url, true);
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+	$(objt+"-status").show()
+	$(objt+"-result").show()
+        // console.log(this.responseText);
+        var response = JSON.parse(this.responseText);
+        console.log(JSON.stringify(response))
+	$(objt+"-result div").append(this.responseText)
+        if(response.decode) {
+/*
+        $("#table-"+vin).dynatable({
+          features: {
+            paginate: false,
+            recordCount: false,
+            sorting: false,
+            search: false
+          },
+          dataset: {
+            records: response.decode
+          }
+        })
+*/
+        } else {
+	  // negative response
+        }
+      }
+    }
+    xhttp.send();
+})
 
 var lpchpattern=/(\bAG|\bSZ|\bZH|\bsZ)\s*(\d[0-9\s*0-9]{0,6})\b/
 var tgpattern=/[0-9]{1,1}[a-zA-Z ]{2,2}[0-9]{0,5}$/g
@@ -9,11 +75,8 @@ var kbaenabled=false;
 
 
 
-// var APIURL = "http://192.168.1.105:8090/image2text/image2text.php"
-// var APIHOST = "ripro-svis-lb-96fd9452b00ef973.elb.eu-central-1.amazonaws.com"
-var APIHOST = "localhost:8081"
 var APIPATH = "/vin/findInImage"
-var APIURL = "http://" +APIHOST + APIPATH
+var APIURL = APIHOST + APIPATH
 function callApi(img) {
     var url = APIURL;
     console.log(url);
@@ -109,7 +172,7 @@ function callApi(img) {
 
 function getVinInfo(vin) {
     var APIPATH = "/vin/decodePro"
-    var APIURL = "http://" +APIHOST + APIPATH + "/" + vin
+    var APIURL = APIHOST + APIPATH + "/" + vin
     var url = APIURL;
     console.log(url);
     var xhttp = new XMLHttpRequest();
