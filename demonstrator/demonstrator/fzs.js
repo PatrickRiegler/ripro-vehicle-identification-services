@@ -43,7 +43,8 @@ $("[id*='vin-'][id*='-submit']").click(function () {
         // console.log(this.responseText);
         var response = JSON.parse(this.responseText);
         console.log(JSON.stringify(response))
-	$(objt+"-result div").append(this.responseText)
+	$(objt+"-result div").append(syntaxHighlight(JSON.stringify(response, undefined, 4)))
+	//document.body.appendChild(document.createElement('pre')).innerHTML = syntaxHighlight(this.responseText)
         if(response.decode) {
 /*
         $("#table-"+vin).dynatable({

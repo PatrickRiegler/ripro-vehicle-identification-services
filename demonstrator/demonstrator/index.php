@@ -174,6 +174,7 @@
 <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
 <script type="text/javascript" src="./require.js"></script>
+<script type="text/javascript" src="./lib.js"></script>
 <script type="text/javascript" src="./fzs.js"></script>
 </body>
 
