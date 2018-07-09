@@ -2,8 +2,11 @@
   "name": "ripro-vehcile-identification-services",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "server",
   "dependencies": {
+    "mongoose": "5.*.*",
+    "chai": "4.*.*",
+    "chai-http": "4.*.*",
     "express": "4.*.*",
     "cors": "2.*.*",
     "aws-sdk": "2.*.*",
@@ -18,10 +21,6 @@
     "vin-lite": "3.*.*"
   },
   "devDependencies": {},
-  "scripts": {
-    "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "scripts": {
     "test": "mocha"
   },

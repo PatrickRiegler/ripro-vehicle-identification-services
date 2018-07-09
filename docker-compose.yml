@@ -15,6 +15,7 @@ services:
     environment:
 #     - WSURL=${AWSIP}
 #     - WSPORT=1337
+     - SERVERNAME=ec2-35-158-69-241.eu-central-1.compute.amazonaws.com
      - PORT=8081
      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
@@ -44,7 +45,9 @@ services:
 #      - .api/:/usr/src/ripro-vis/
 #    extra_hosts: 
 #     - "elasticsearch:${AWSIP}"
-#    environment:
+    environment:
+     - SERVERNAME=ec2-35-158-69-241.eu-central-1.compute.amazonaws.com
+     - PORT=8081
 #     - APIKEY=${APIKEY}
 #     - SECRETKEY=${SECRETKEY}
 #     - WSURL=${AWSIP}
