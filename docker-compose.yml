@@ -37,7 +37,9 @@ services:
       context: ./demonstrator
       dockerfile: Dockerfile
     container_name: ripro-vis-demonstrator-app
-    ports: ['8082:80']
+    ports: 
+       - '8082:80'
+       - '8083:443'
 #    volumes:
 #      - .api/:/usr/src/ripro-vis/
 #    extra_hosts: 
