@@ -1,4 +1,6 @@
 var express = require('express');
+var http = require('http');
+var https = require('https');
 var vinlite = require('vin-lite');
 var bodyParser = require('body-parser');  
 var querystring = require('querystring'); 
@@ -199,5 +201,20 @@ var server = app.listen(serverPort, function () {
   var port = server.address().port
 
   console.log("RiPro Vehicle Identification Services listening on Port: %s", port)
+
+})
+
+var options = {
+    key: fs.readFileSync('./ssl/server.key'),
+    cert: fs.readFileSync('./ssl/server.crt'),
+};
+
+var serverPortSsl = (process.env.PORT>0)? process.env.SSLPORT : 443;
+var serverSsl = https.createServer(options, app).listen(serverPortSsl, function () {
+
+  var host = serverSsl.address().address
+  var port = serverSsl.address().port
+
+  console.log("RiPro Vehicle Identification Services (SSL) listening on Port: %s", port)
 
 })

@@ -11,8 +11,10 @@ var kbaenabled=false;
 
 // var APIURL = "http://192.168.1.105:8090/image2text/image2text.php"
 // var APIHOST = "ripro-svis-lb-96fd9452b00ef973.elb.eu-central-1.amazonaws.com"
-var APIHOST = "localhost:8081"
-var APIURL = "http://" +APIHOST + "/vin/findInImage"
+var APIPROT = (SERVERPROT!="") ? SERVERPROT : "http";
+var APIHOST = (SERVERNAME!="") ? SERVERNAME : "localhost";
+var APIPORT = (SERVERPORT!="") ? SERVERPORT : "8081";
+var APIURL = APIPROT+"://" +APIHOST + ":" + APIPORT + "/vin/findInImage"
 function callApi(img) {
     var url = APIURL;
     console.log(url);

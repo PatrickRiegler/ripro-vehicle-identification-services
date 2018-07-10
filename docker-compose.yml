@@ -7,7 +7,9 @@ services:
       context: ./api
       dockerfile: Dockerfile
     container_name: ripro-vis-app
-    ports: ['8081:8081']
+    ports: 
+      - '8081:8081'
+      - '8443:8443'
 #    volumes:
 #      - .api/:/usr/src/ripro-vis/
 #    extra_hosts: 
@@ -15,8 +17,9 @@ services:
     environment:
 #     - WSURL=${AWSIP}
 #     - WSPORT=1337
-     - SERVERNAME=ec2-35-158-69-241.eu-central-1.compute.amazonaws.com
+     - SERVERNAME=ec2-18-185-225-168.eu-central-1.compute.amazonaws.com
      - PORT=8081
+     - SSLPORT=8443
      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
      - APIKEY=${APIKEY}
@@ -46,8 +49,10 @@ services:
 #    extra_hosts: 
 #     - "elasticsearch:${AWSIP}"
     environment:
-     - SERVERNAME=ec2-35-158-69-241.eu-central-1.compute.amazonaws.com
-     - PORT=8081
+     - SERVERPROT=https
+     - SERVERNAME=ec2-18-185-225-168.eu-central-1.compute.amazonaws.com
+     - SERVERPORT=8443
+     - PORT=8443
 #     - APIKEY=${APIKEY}
 #     - SECRETKEY=${SECRETKEY}
 #     - WSURL=${AWSIP}

@@ -7,8 +7,10 @@ EXPOSE 1337
 CMD [ "npm", "start" ]
 
 COPY package*.json ./
+RUN mkdir ./ssl
 RUN npm install
 
-COPY ./*.js ./
+COPY ./ssl/* ./ssl/
 COPY ./*.png ./
+COPY ./*.js ./
 

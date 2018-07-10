@@ -3,6 +3,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>RiPro - Smart Vehicle Identification Services - Demonstrator</title>
+<script>
+SERVERPROT = "<?= $_ENV["SERVERPROT"] ?>"
+SERVERNAME = "<?= $_ENV["SERVERNAME"] ?>"
+SERVERPORT = "<?= $_ENV["SERVERPORT"] ?>"
+</script
+
+</head>
+
 <body>
       
       <div class="fullscreen">
