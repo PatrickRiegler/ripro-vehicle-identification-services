@@ -8,6 +8,7 @@ describe('Array', function() {
   });
   // tibors new code
   describe('Tibors Test Cases', function() {
+    console.log("Tibors log entry")
   });
 });
 
