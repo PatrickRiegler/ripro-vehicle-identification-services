@@ -1,16 +1,19 @@
+var request = require('request');
+request('http://www.google.com', function (error, response, body) {
+  console.log('error:', error); 
+  console.log('statusCode:', response && response.statusCode); 
+  console.log('body:', body); 
+});
+
 var assert = require('assert');
 
 describe('Array', function() {
   describe('#indexOf()', function() {
-    it('should return -1 when the value is not present', function() {
-      assert.equal([1,2,3].indexOf(4), -1);
+    it('http response code is 200', function () {             
     });
   });
   // tibors new code
   describe('Tibors Test Cases', function() {
-    console.log("Tibors log entry")
+    console.log("Tibors log entry");
   });
 });
-
-// test branch restriction
-
