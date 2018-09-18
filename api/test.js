@@ -10,7 +10,14 @@ chai.use(chaiHttp);
 url="http://localhost:"+serverPort
 chairequest = chai.request(url)
 
-testCases=["/healthcheck","/vin/check/WAUZZZF50JN016611"]
+var fs = require('fs');
+var array = fs.readFileSync('positivetestcases.test').toString().split("\n");
+testCases=[]
+for(i in array) {
+  console.log(array[i]);
+  if(array[i]!="") testCases.push("/vin/check/"+array[i])
+}
+
 
 describe('prove that, the response code is 200', function() {
   testCases.forEach(function(tc) {
