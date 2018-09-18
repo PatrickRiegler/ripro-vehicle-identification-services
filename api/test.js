@@ -19,7 +19,6 @@ describe('Array', function() {
         });
      });
 });
-
    describe('prove that, the response code is 200', function() {
       it('this test proves, that the response code is 200', function(done) {
          chai.request('http://www.google.com')
