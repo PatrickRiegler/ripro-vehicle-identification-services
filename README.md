@@ -19,6 +19,13 @@ This script will start the
 
 ## run test cases
 ```
-./restart.sh
+./test.sh [full]
+```
+(Attention: "full" takes very long)
+
+## single tests
+```
+curl "http://localhost:8081/vin/check/WAUZZZF50JN016611?debug=true&test=true"
+curl "http://localhost:8081/vin/decode/WAUZZZF50JN016611?debug=true&test=true"
 ```
 
