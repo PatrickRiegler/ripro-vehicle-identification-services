@@ -52,6 +52,7 @@ echo
 echo
 echo "run mocha test cases:"
 cd api
+npm install
 npm test
 cd ..
 
