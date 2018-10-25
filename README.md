@@ -16,3 +16,9 @@ This script will start the
 
 ---
 
+
+## run test cases
+```
+./restart.sh
+```
+
