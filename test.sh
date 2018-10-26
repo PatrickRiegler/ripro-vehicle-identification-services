@@ -15,10 +15,18 @@ echo "testing (debug): $i --- ($url)"
 curl $url
 echo
 
-if [ "$1" = "full" ]; then
-  testcases="$(cat api/positivetestcases.test.full)"
+fns="api/positivetestcases.test"
+if [ "$1" != "" ]; then
+  fn="api/positivetestcases.test.$1"
+  if [ -f ${fn} ]; then
+    echo "1"
+    testcases="$(cat $fn)"
+  else
+    echo "2"
+    testcases="$(cat $fns)"
+  fi
 else
-  testcases="$(cat api/positivetestcases.test)"
+  testcases="$(cat $fns)"
 fi
 
 for i in $testcases
